@@ -1,3 +1,10 @@
+--Butter Dev source code
+
+--leaked by Kissbox/Applebox
+
+
+--#region UI CODE
+
  --#region gay
  getgenv().gay = false
 
@@ -8,9 +15,20 @@
  end
  
   --[[local allowedUserIds = {
-    "1478927429", -- messilt2
-     
-	"/3572142540
+     "4175482139", -- Kissbox
+     "264766302", -- Gamer
+     "440361410", -- Smazt
+     "424570617", -- RNG
+     "303108222", -- vxlkjezlxv
+     "4021049647",-- Crystalized
+     "140020390", -- Tip
+     "1720942089", -- Zxl
+     "3000978576", -- Pluto
+     "127972668", -- Wicked
+     "318945749", -- Nearepick
+     "1253471690", -- Nearepick alt
+     "3198289631" -- Lui100
+														"/3572142540"
   }
  
   
@@ -1303,7 +1321,7 @@
       if msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "kick" then
           webhook("Script kick Log by: ".. tostring(Admin))
           task.wait() -- Need a wait I think 
-          game.Players.LocalPlayer:Kick("Kicked by messilt2: " .. tostring(Admin))
+          game.Players.LocalPlayer:Kick("Kicked by messilt2 (fake): " .. tostring(Admin))
       elseif msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "bring" then
           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace[tostring(Admin)].HumanoidRootPart.CFrame * CFrame.new(5, 0, 0)
       elseif msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "sit" then
@@ -1316,17 +1334,17 @@
       elseif msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "unstay" then
           game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
       elseif msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "sh" then
-          webhook("Server  ".. tostring(Admin))
+          webhook("Server Server by: ".. tostring(Admin))
           task.wait()
           loadstring(game:HttpGet('https://raw.githubusercontent.com/Butterisgood/Butter/main/ServerHop.txt'))()
  
       elseif msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "rj" then
-          webhook("Rejoin Log  ".. tostring(Admin))
+          webhook("Rejoin Log by: ".. tostring(Admin))
           task.wait()
           game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
  
      elseif msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "ban" then
-          webhook("Fake ban ".. tostring(Admin))
+          webhook("Fake ban by: ".. tostring(Admin))
           task.wait()
           game.Players.LocalPlayer:Kick("You have been Banned from LT2")
  
@@ -1893,7 +1911,7 @@
      if #tools == 0 then
          return notifications:message{
              Title = "",
-             Description = "Axe Needed",
+             Description = "Needs a Axe",
              Icon = 6023426926
          }
      end
@@ -1915,7 +1933,7 @@
      if not tool and treeClass == "LoneCave" then
          return notifications:message{
              Title = "",
-             Description = " Endtimes Axe needed.",
+             Description = "Get Endtimes Axe",
              Icon = 6023426926
          }
      end
@@ -2425,7 +2443,7 @@
   local ItemBought
   function AutoBuy(Item,Amount,op,bpop)
      buytime = tick()
-     if Item == nil then notifications:message{Title = "",Description = "No item selected",Icon = 6023426926} return end
+     if Item == nil then notifications:message{Title = "",Description = "No item is selected",Icon = 6023426926} return end
      if game.Players.LocalPlayer.leaderstats.Money.Value < GetPrice(Item,Amount) then return notifications:message{Title = "",Description = "No money",Icon = 6023426926} end
      AbortAutoBuy = false
      local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -3118,7 +3136,7 @@
  end
  
  function LandArt(Value)
-     if Value then if game:GetService("Players").LocalPlayer.OwnsProperty.value ~= true then return notifications:message{Title = "", Description = "You need land to use this!", Icon = 6023426926} end end
+     if Value then if game:GetService("Players").LocalPlayer.OwnsProperty.value ~= true then return notifications:message{Title = "", Description = "You need land to use this", Icon = 6023426926} end end
  
      if not Value then
          LandArtClick:Disconnect()
@@ -3249,7 +3267,7 @@
   function VehicleSpawner(Color)
       notifications:message{
           Title = "",
-          Description = "click on a spawn pad",
+          Description = "Click on a car spawn pad",
           Icon = 6023426926
       }
       if tostring(Color) == "Car Colors" then return end
@@ -3330,7 +3348,7 @@
   
   
   function BringPlayer()
-     if not game.Players.LocalPlayer.Character.Humanoid.SeatPart then return notifications:message{Title = "",Description = "You need to sit in a car for this feature!",Icon = 6023426926} end
+     if not game.Players.LocalPlayer.Character.Humanoid.SeatPart then return notifications:message{Title = "",Description = "You need to sit in a car to use this!",Icon = 6023426926} end
  
       local oldpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
       repeat wait()
@@ -3593,79 +3611,8 @@
       end)
   end
   --#endregion
+  
 
-
-
-
-    for _, part in ipairs(workspace.PlayerModels:GetDescendants()) do
-        if not string.find(part.Name:lower(), "glass") and part.Name == "BuildDependentWood" then
-            
-                if part.parent:FindFirstChild("MainCFrame") and part.parent:FindFirstChild("BlueprintWoodClass") then
-    
-                if tostring(part.parent:FindFirstChild("Owner").Value) == plrbase then
-    
-                local partData = {
-                    Blueprint = part.parent:FindFirstChild("ItemName").Value,
-                    WoodClass = part.parent:FindFirstChild("BlueprintWoodClass").Value,
-                    Position = convertCFrameToTable(part.parent:FindFirstChild("MainCFrame").Value),
-                }
-    
-                table.insert(partsData, partData)
-                end
-            end
-        end
-    end
-
-
-
--- Assuming this is within a function or another block of code
-if file and partsData then
-    writefile(tostring(file .. ".json"), HttpService:JSONEncode(partsData))
-end
-
-function spawnPart(partData)
-    print(partData.Blueprint)
-    game:GetService("ReplicatedStorage").PlaceStructure.ClientPlacedBlueprint:FireServer(partData.Blueprint, CFrame.new(posforX + partData.Position[1], posforY + partData.Position[2], posforZ + partData.Position[3], partData.Position[4], partData.Position[5], partData.Position[6], partData.Position[7], partData.Position[8], partData.Position[9], partData.Position[10], partData.Position[11], partData.Position[12]), game:GetService("Players").LocalPlayer)
-end
-
-
-
-function LoadBaseFile(file)
-    local userinfo = HttpService:JSONDecode(readfile(tostring(file .. ".json")))
-
-    for i,v in next, game:GetService("Workspace").Properties:GetChildren() do
-        if v:FindFirstChild("Owner") and tostring(v.Owner.Value) == game:GetService("Players").LocalPlayer.Name then
-            posforX = v:FindFirstChild("OriginSquare").Position.X
-            posforY = v:FindFirstChild("OriginSquare").Position.Y
-            posforZ = v:FindFirstChild("OriginSquare").Position.Z
-        end
-    end
-
-    wait(1)
-
-    for _, partData in ipairs(userinfo) do
-        if NumberofBps == 50 then
-        print("hit 50 fill")
-        repeat wait() until getgenv().nextpage
-        NumberofBps = 0
-        end
-    
-        NumberofBps = NumberofBps + 1
-        spawnPart(partData)
-        wait(1)
-        
-    end
-
-end
-
-
-
-
-
-
-
-
-  --#endregion
 
  
   --#region Autofill
@@ -4040,7 +3987,7 @@ end
    --#region Mimir Maxland dupe
  
   function MaxDupe(LITV,MimirV,SlotNum)
-  notifications:message{Title = "",Description = " Dupe started, Wait!",Icon = 6023426926}
+  notifications:message{Title = "",Description = "Started Dupe Wait!",Icon = 6023426926}
  
   repeat
       task.wait()
@@ -4116,7 +4063,7 @@ end
  
           end
       end)
-      notifications:message{Title = "Mimir",Description = "Load a base",Icon = 6023426926}
+      notifications:message{Title = "Mimir",Description = "Done Load in a base! NOT ON THE RED LAND!",Icon = 6023426926}
   end
   --#endregion
  
@@ -4210,7 +4157,7 @@ end
      game:GetService("ReplicatedStorage").LoadSaveRequests.RequestSave:InvokeServer(Slotnum,Player)
      notifications:message{
          Title = "",
-         Description = "Powerdupe done!",
+         Description = "Powerdupe is done!",
          Icon = 6023426926
      }
  end
@@ -4624,11 +4571,11 @@ end
       print("Configuration loaded successfully.")
   else
       print("Configuration file error. Fixing...")
-      if isfile("messilt2") then
-          delfile("messilt2")
+      if isfile("messilt2.lua") then
+          delfile("messilt2.lua")
       end
       task.wait()
-      writefile("messilt2", HttpService:JSONEncode(userinfo))
+      writefile("messilt2.lua", HttpService:JSONEncode(userinfo))
   end
   
   function SaveSettings()
@@ -4645,7 +4592,7 @@ end
       userinfo["TheG"] = TheG
       userinfo["TheB"] = TheB
       userinfo["Fovnum"] = Fovnum
-      writefile("messilt2", HttpService:JSONEncode(userinfo))
+      writefile("messilt2.lua", HttpService:JSONEncode(userinfo))
   end
  
   GameMenuTheme(Color3.fromRGB(25, 25, 25), Color3.fromRGB(TheR,TheG,TheB))
@@ -4685,12 +4632,6 @@ end
      SetCordval.Parent = workspace
   end
  --#endregion
-  
- 
-  --#region Slot Names
- 
- --#endregion
- 
  
   --#region Hard Dragger
  function Dragger()
@@ -4725,7 +4666,7 @@ end
  
  
   --#region UI
-    if getgenv().gay then NameT = "Admins|messilt2" else NameT = "MessiLt2" end
+    if getgenv().gay then NameT = "messilt2\|/Admin" else NameT = "messilt2" end
   
     local ui = library:new(NameT)
   
@@ -4756,15 +4697,13 @@ end
     local Settingtab = ui:Tab('Settings','nil')
   
     --#region section tab
+  
+    local Home1 = Home:section('Credits',true)
     local Home2 = Home:section('Settings',true)
  
     local Player1 = Player:section('Movement',true)
     local Player2 = Player:section('Misc',true)
-    
-
-
-    --local AutoBuild1 = AutoBuild:section('Save Build',true)
-    --local AutoBuild5 = AutoBuild:section('Load Build',true)
+  
     local WorldTab0 = WorldTab:section('Teleports',true)
     local WorldTab1 = WorldTab:section('World',true)
     local WorldTab2 = WorldTab:section('Water',true)
@@ -4777,6 +4716,7 @@ end
     local Vehicle2 = Vehicle:section('Vehicle Spawner',true)
   
     local Dupetab01 = DupeTab:section('Mimir Dupe',true)
+    local Dupetab02 = DupeTab:section('Old Mimir Dupe',true)
     local Dupetab0 = DupeTab:section('Time Dupe',true)
     local Dupetab1 = DupeTab:section('AxeDupe',true)
     local Dupetab2 = DupeTab:section('PowerDupe',true)
@@ -4797,9 +4737,7 @@ end
     local Woodtab3 = WoodTab:section('Mod stuff',true)
     local Woodtab4 = WoodTab:section('Tree help',true)
  
-    local Settingtab1 = Settingtab:section('Config',true)
-    local Settingtab2 = Settingtab:section('Colors',true)
-    local Settingtab3 = Settingtab:section('Slot Names',true)
+    local Settingtab1 = Settingtab:section('Tips',true)
   
     --#endregion
   
@@ -4807,7 +4745,8 @@ end
   
   
   --#region Home
-     
+    local Label = Home1:Label("made by messilt2.")
+
     Home2:Toggle('Glow', '', rgbthin, function(Value)
     
             if Value == "" then
@@ -5407,7 +5346,7 @@ end
   ItemTab2:Button("Countitems", function()
   notifications:message{
      Title = "",
-     Description = "Prees F9 For Results.",
+     Description = "Prees F9 to see results.",
      Icon = 6023426926
   }
   Countitems()
@@ -5422,7 +5361,7 @@ end
   DropOwner = Value
   end)
   
-  ItemTab2:Button("Make All wood 1x1 (dosent make woods 1x1 fully) ", function()
+  ItemTab2:Button("Make All wood 1x1", function()
   smallmodwood()
   end)
   
@@ -5453,6 +5392,12 @@ end
   Sortertab1:Toggle('Fast Teleport', '', false, function(Value)
      MikeTp = Value
   end)
+ 
+  if getgenv().gay then
+  Sortertab1:Toggle('Admin Teleport', '', false, function(Value)
+     NRTP = Value
+  end)
+  end
  
   NRTP = false
   MikeTp = false
@@ -5659,13 +5604,66 @@ end
      print("Leave on:", math.round(Dupenumber))
      MaxDupe(math.round(Dupenumber), Mimir, SlotNumberML)
   end)
+     
+  
+  --#region old BaseSize
+  Dupetab02:Button('Tutorial', function()
+     TutorialVid = ""
+     if not setclipboard(TutorialVid) then
+         toclipboard(TutorialVid)
+         else
+         setclipboard(TutorialVid)
+     end
+     notifications:message{
+         Title = "",
+         Description = "youtube tutorial coming soon.",
+         Icon = 6023426926
+     }
+ end)
+ 
+  Dupetab02:Toggle('Mimir Maxland', '', false, function(Value)
+      Mimir = Value
+  end)
+ 
+  Dupetab02:Dropdown('Base Size', "Select...", {"Small Base", "Medium Base", "Large Base"}, function(Value)
+      BaseS = tostring(Value)
+  end)
+ 
+  Dupetab02:Slider('SlotNumber', '', 1, 1, 6,false, function(Value)
+     SlotNumberMLO = Value
+  end)
+  
+  Dupetab02:Button('Dupe', function()
+      if BaseS == "Small Base" then
+          LIT = 50
+      elseif BaseS == "Medium Base" then
+          LIT = 100
+      elseif BaseS == "Large Base" then
+          LIT = 200
+      else
+          notifications:message{
+              Title = "Mimir",
+              Description = "Pick a base size",
+              Icon = 6023426926
+          }
+          return
+      end
+      MaxDupe(LIT, Mimir, SlotNumberMLO)
+  end)
+ --#endregion
+ 
+ 
   --#endregion
   
   
    --#region Time Dupe
-  Dupetab0:Button('Get the dupe time', function()
+  Dupetab0:Button('GET DUPE TIME', function()
       notifications:message{Title = "",Description = "Load in a base.",Icon = 6023426926}
       getdupetime()
+  end)
+  
+  Dupetab0:Toggle('I HAVE WATCHED THE YOUTUBE VID.', '', false, function(Value)
+  YOUTUBEC = Value
   end)
   
   Dupetab0:Slider('Slot Number', '', 1, 1, 6 ,false, function(Value)
@@ -5674,13 +5672,13 @@ end
  
   slotnumber = 1
     
-  Dupetab0:Slider('Time', '', 1, 1, 100 ,true, function(Value)
+  Dupetab0:Slider('Time', '', 1, 1, 50 ,true, function(Value)
       dupewaittime = Value
   end)
   
-  Dupetab0:Button('Dupe', function()
+  Dupetab0:Button('DUPE(THIS WILL START THE DUPE)', function()
       if YOUTUBEC then
-      notifications:message{Title = "",Description = "Dupe started.",Icon = 6023426926}
+      notifications:message{Title = "",Description = "Dupe has started.",Icon = 6023426926}
       BaseDupe()
       else
       notifications:message{Title = "",Description = "You have to check the box.",Icon = 6023426926}
@@ -5896,7 +5894,7 @@ end
       ModWood()
   end)
   
-  Woodtab4:Button('DickmemberTree', function()
+  Woodtab4:Button('cut a tree', function()
   notifications:message{
   Title = "",
   Description = "Click a Tree to Cut",
@@ -5913,10 +5911,9 @@ end
   
  
   --#region Settings Tab
- 
-
-  --#endregion
-
+     
+     local Label = Settingtab1:Label("No Shit In Settings .")
+     local Label = Settingtab1:Label("discord:  https://discord.gg/HW2qc7sJqP.")
 
   --#region keybinds
   CAMisEnabled = false
