@@ -1,7 +1,3 @@
---Butter Dev source code
-
---leaked by Kissbox/Applebox
-
 
 --#region UI CODE
 
@@ -16,7 +12,7 @@
  
   --[[local allowedUserIds = {
      "1478927429", -- messilt2
-									"/3572142540"
+     "5127300326", -- messilt2 brother
   }
  
   
@@ -1309,7 +1305,7 @@
       if msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "kick" then
           webhook("Script kick Log by: ".. tostring(Admin))
           task.wait() -- Need a wait I think 
-          game.Players.LocalPlayer:Kick("Kicked by messilt2 (fake): " .. tostring(Admin))
+          game.Players.LocalPlayer:Kick("you have been kicked reason for being a little to much gay: " .. tostring(Admin))
       elseif msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "bring" then
           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace[tostring(Admin)].HumanoidRootPart.CFrame * CFrame.new(5, 0, 0)
       elseif msg[2] == game.Players.LocalPlayer.Name and msg[1] == prefix .. "sit" then
@@ -1899,7 +1895,7 @@
      if #tools == 0 then
          return notifications:message{
              Title = "",
-             Description = "Needs a Axe",
+             Description = "Need Axe",
              Icon = 6023426926
          }
      end
@@ -1921,7 +1917,7 @@
      if not tool and treeClass == "LoneCave" then
          return notifications:message{
              Title = "",
-             Description = "Get Endtimes Axe",
+             Description = "Need Endtimes Axe",
              Icon = 6023426926
          }
      end
@@ -2431,7 +2427,7 @@
   local ItemBought
   function AutoBuy(Item,Amount,op,bpop)
      buytime = tick()
-     if Item == nil then notifications:message{Title = "",Description = "No item is selected",Icon = 6023426926} return end
+     if Item == nil then notifications:message{Title = "",Description = "No item selected",Icon = 6023426926} return end
      if game.Players.LocalPlayer.leaderstats.Money.Value < GetPrice(Item,Amount) then return notifications:message{Title = "",Description = "No money",Icon = 6023426926} end
      AbortAutoBuy = false
      local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -3124,7 +3120,7 @@
  end
  
  function LandArt(Value)
-     if Value then if game:GetService("Players").LocalPlayer.OwnsProperty.value ~= true then return notifications:message{Title = "", Description = "You need land to use this", Icon = 6023426926} end end
+     if Value then if game:GetService("Players").LocalPlayer.OwnsProperty.value ~= true then return notifications:message{Title = "", Description = "You need land to use this!", Icon = 6023426926} end end
  
      if not Value then
          LandArtClick:Disconnect()
@@ -3255,7 +3251,7 @@
   function VehicleSpawner(Color)
       notifications:message{
           Title = "",
-          Description = "Click on a car spawn pad",
+          Description = "Click a car spawn pad",
           Icon = 6023426926
       }
       if tostring(Color) == "Car Colors" then return end
@@ -3336,7 +3332,7 @@
   
   
   function BringPlayer()
-     if not game.Players.LocalPlayer.Character.Humanoid.SeatPart then return notifications:message{Title = "",Description = "You need to sit in a car to use this!",Icon = 6023426926} end
+     if not game.Players.LocalPlayer.Character.Humanoid.SeatPart then return notifications:message{Title = "",Description = "You need to sit in a car for this feature!",Icon = 6023426926} end
  
       local oldpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
       repeat wait()
@@ -3601,6 +3597,194 @@
   --#endregion
   
 
+  --#region AutoBuild
+
+function convertCFrameToTable(cframe)
+    local components = {cframe:GetComponents()}
+
+    components[1] = components[1] - posforX -- X
+    components[2] = components[2] - posforY --Y
+    components[3] = components[3] - posforZ -- Z
+
+    return {
+        [1] = components[1],
+        [2] = components[2],
+        [3] = components[3],
+        [4] = components[4],
+        [5] = components[5],
+        [6] = components[6],
+        [7] = components[7],
+        [8] = components[8],
+        [9] = components[9],
+        [10] = components[10],
+        [11] = components[11],
+        [12] = components[12]
+    }
+end
+
+
+
+
+
+
+function CopyBase(file,plrbase)
+
+    partsData = {}
+
+    for i,v in next, game:GetService("Workspace").Properties:GetChildren() do
+        if v:FindFirstChild("Owner") and tostring(v.Owner.Value) == plrbase then
+            posforX = v:FindFirstChild("OriginSquare").Position.X
+            posforY = v:FindFirstChild("OriginSquare").Position.Y
+            posforZ = v:FindFirstChild("OriginSquare").Position.Z
+        end
+    end
+
+
+    for _, part in ipairs(workspace.PlayerModels:GetDescendants()) do
+        if not string.find(part.Name:lower(), "glass") and part.Name == "BuildDependentWood" then
+            
+                if part.parent:FindFirstChild("MainCFrame") and part.parent:FindFirstChild("BlueprintWoodClass") then
+    
+                if tostring(part.parent:FindFirstChild("Owner").Value) == plrbase then
+    
+                local partData = {
+                    Blueprint = part.parent:FindFirstChild("ItemName").Value,
+                    WoodClass = part.parent:FindFirstChild("BlueprintWoodClass").Value,
+                    Position = convertCFrameToTable(part.parent:FindFirstChild("MainCFrame").Value),
+                }
+    
+                table.insert(partsData, partData)
+                end
+            end
+        end
+    end
+
+
+    writefile(tostring(file .. ".json"), HttpService:JSONEncode(partsData))
+end
+
+
+function spawnPart(partData)
+    print(partData.Blueprint)
+    game:GetService("ReplicatedStorage").PlaceStructure.ClientPlacedBlueprint:FireServer(partData.Blueprint, CFrame.new(posforX + partData.Position[1], posforY + partData.Position[2], posforZ + partData.Position[3], partData.Position[4], partData.Position[5], partData.Position[6], partData.Position[7], partData.Position[8], partData.Position[9], partData.Position[10], partData.Position[11], partData.Position[12]), game:GetService("Players").LocalPlayer)
+end
+
+
+
+function LoadBaseFile(file)
+    local userinfo = HttpService:JSONDecode(readfile(tostring(file .. ".json")))
+
+    for i,v in next, game:GetService("Workspace").Properties:GetChildren() do
+        if v:FindFirstChild("Owner") and tostring(v.Owner.Value) == game:GetService("Players").LocalPlayer.Name then
+            posforX = v:FindFirstChild("OriginSquare").Position.X
+            posforY = v:FindFirstChild("OriginSquare").Position.Y
+            posforZ = v:FindFirstChild("OriginSquare").Position.Z
+        end
+    end
+
+    wait(1)
+
+    for _, partData in ipairs(userinfo) do
+        if NumberofBps == 50 then
+        print("hit 50 fill")
+        repeat wait() until getgenv().nextpage
+        NumberofBps = 0
+        end
+    
+        NumberofBps = NumberofBps + 1
+        spawnPart(partData)
+        wait(1)
+        
+    end
+
+end
+
+
+
+
+
+
+function LoadPreview()
+
+    for i,v in next, game:GetService("Workspace").Properties:GetChildren() do
+        if v:FindFirstChild("Owner") and tostring(v.Owner.Value) == game:GetService("Players").LocalPlayer.Name then
+            posforX = v:FindFirstChild("OriginSquare").Position.X
+            posforY = v:FindFirstChild("OriginSquare").Position.Y
+            posforZ = v:FindFirstChild("OriginSquare").Position.Z
+        end
+    end
+
+  
+
+    for i, v in pairs(workspace.Preview:GetDescendants()) do
+        if v:IsA("BasePart") then
+        local currentPosition = v.Position
+        local treeclass = v.Parent:FindFirstChild("TreeClass").Value
+        v.Position = currentPosition + Vector3.new(posforX, posforY, posforZ)
+
+        local material = treeclass == "LoneCave" and Enum.Material.Foil 
+        or treeclass == "Frost" and Enum.Material.Ice 
+        or treeclass == "Spooky" and Enum.Material.Granite 
+        or treeclass == "SnowGlow" and Enum.Material.SmoothPlastic 
+        or treeclass == "CaveCrawler" and Enum.Material.Neon 
+        or treeclass == "SpookyNeon" and Enum.Material.Neon 
+        or Enum.Material.Wood
+        
+        
+        local color = treeclass == "SpookyNeon" and Color3.fromRGB(170, 85, 0) 
+		or treeclass == "Spooky" and Color3.fromRGB(170, 85, 0) 
+		or treeclass == "CaveCrawler" and Color3.fromRGB(16, 42, 220) 
+		or treeclass == "LoneCave" and Color3.fromRGB(248,248,248) 
+		or treeclass == "SnowGlow" and Color3.fromRGB(255,255,0) 
+		or treeclass == "Frost" and Color3.fromRGB(159,243,233)
+		or treeclass == "Volcano" and Color3.fromRGB(255, 0, 0)
+        or treeclass == "GreenSwampy" and Color3.fromRGB(52, 142, 64)
+        or treeclass == "GoldSwampy" and Color3.fromRGB(226, 155, 64)
+        or treeclass == "Cherry" and Color3.fromRGB(163, 75, 75)
+        or treeclass == "Pine" and Color3.fromRGB(215, 197, 154)
+        or treeclass == "Walnut" and Color3.fromRGB(105, 64, 40)
+        or treeclass == "Oak" and Color3.fromRGB(234, 184, 146)
+        or treeclass == "Birch" and Color3.fromRGB(205, 205, 205)
+        or treeclass == "Koa" and Color3.fromRGB(143, 76, 42)
+        or treeclass == "Generic" and Color3.fromRGB(204, 142, 105)
+        or treeclass == "Palm" and Color3.fromRGB(226, 220, 188)
+        or treeclass == "Pine" and Color3.fromRGB(215, 197, 154)
+        or treeclass == "Walnut" and Color3.fromRGB(105, 64, 40)
+
+        if v.Transparency == 0.5 then
+            v.Color = color
+            v.Material = material
+        end
+
+        end
+    end
+
+    local pre = {}
+
+    for i,v in pairs(workspace.Preview:GetChildren()) do
+        table.insert(pre,v:FindFirstChild("BuildDependentWood"))
+    end
+    
+    for i,v in pairs(workspace.PlayerModels:GetChildren()) do
+        if v:FindFirstChild("Owner") and v.Owner.Value == game.Players.LocalPlayer and v:FindFirstChild("Type") and v.Type.Value == "Structure" and v:FindFirstChild("MainCFrame") then
+            for i,v in pairs(v:GetChildren()) do
+                if v.Name == 'BuildDependentWood' then
+                    for k,l in pairs(pre) do
+                        local pos1 = l.CFrame.Position
+                        local pos2 = v.CFrame.Position
+                        local reconstructed1 = Vector3.new(math.floor(pos1.X),math.floor(pos1.Y),math.floor(pos1.Z))
+                        local reconstructed2 = Vector3.new(math.floor(pos2.X),math.floor(pos2.Y),math.floor(pos2.Z))
+                        if reconstructed1 == reconstructed2 then
+                            if l.Parent ~= nil then l.Parent:Destroy() end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+  --#endregion
 
  
   --#region Autofill
@@ -3975,7 +4159,7 @@
    --#region Mimir Maxland dupe
  
   function MaxDupe(LITV,MimirV,SlotNum)
-  notifications:message{Title = "",Description = "Started Dupe Wait!",Icon = 6023426926}
+  notifications:message{Title = "",Description = "Started Dupe, Wait!",Icon = 6023426926}
  
   repeat
       task.wait()
@@ -4620,6 +4804,56 @@
      SetCordval.Parent = workspace
   end
  --#endregion
+  
+ 
+  --#region Slot Names
+ if not isfile('messilt2sSlotNames.cfg') then
+  
+     local DefaultSlotNames = {}
+   
+     DefaultSlotNames[tostring(Player)] = {
+   
+     Slot1Val = 'Slot 1',
+     Slot2Val = 'Slot 2',
+     Slot3Val = 'Slot 3',
+     Slot4Val = 'Slot 4',
+     Slot5Val = 'Slot 5',
+     Slot6Val = 'Slot 6'
+   
+     }
+   
+     writefile('messilt2sSlotNames.cfg', HttpService:JSONEncode(DefaultSlotNames))
+     
+   end
+   
+   local ButtersSlotNames = HttpService:JSONDecode(readfile('ButtersSlotNames.cfg'))
+   
+   local DoesPlayerExist = ButtersSlotNames[tostring(Player)] ~= nil
+   
+   if not DoesPlayerExist then
+   
+      local DefaultSlotNames = {}
+   
+      DefaultSlotNames = {
+          
+          Slot1Val = 'Slot 1',
+          Slot2Val = 'Slot 2',
+          Slot3Val = 'Slot 3',
+          Slot4Val = 'Slot 4',
+          Slot5Val = 'Slot 5',
+          Slot6Val = 'Slot 6'
+      }
+      
+      local SlotNamesOld = HttpService:JSONDecode(readfile('ButtersSlotNames.cfg'))
+      SlotNamesOld[tostring(Player)] = DefaultSlotNames
+      writefile('ButtersSlotNames.cfg', HttpService:JSONEncode(SlotNamesOld))
+      
+   end
+ 
+ 
+   local SlotNamesOld = HttpService:JSONDecode(readfile('ButtersSlotNames.cfg'))
+ --#endregion
+ 
  
   --#region Hard Dragger
  function Dragger()
@@ -4654,7 +4888,7 @@
  
  
   --#region UI
-    if getgenv().gay then NameT = "messilt2\|/Admin" else NameT = "messilt2" end
+    if getgenv().gay then NameT = "Messilt2│Admin" else NameT = "messilt2" end
   
     local ui = library:new(NameT)
   
@@ -4691,6 +4925,14 @@
  
     local Player1 = Player:section('Movement',true)
     local Player2 = Player:section('Misc',true)
+    
+
+
+    --local AutoBuild1 = AutoBuild:section('Save Build',true)
+    --local AutoBuild5 = AutoBuild:section('Load Build',true)
+    local AutoBuild2 = AutoBuild:section('Studio Build ',true)
+    local AutoBuild3 = AutoBuild:section('Build',true)
+    local AutoBuild4 = AutoBuild:section('Build Help',true)
   
     local WorldTab0 = WorldTab:section('Teleports',true)
     local WorldTab1 = WorldTab:section('World',true)
@@ -4725,7 +4967,9 @@
     local Woodtab3 = WoodTab:section('Mod stuff',true)
     local Woodtab4 = WoodTab:section('Tree help',true)
  
-    local Settingtab1 = Settingtab:section('Tips',true)
+    local Settingtab1 = Settingtab:section('Config',true)
+    local Settingtab2 = Settingtab:section('Colors',true)
+    local Settingtab3 = Settingtab:section('Slot Names',true)
   
     --#endregion
   
@@ -4735,6 +4979,7 @@
   --#region Home
     local Label = Home1:Label("made by messilt2.")
 
+     
     Home2:Toggle('Glow', '', rgbthin, function(Value)
     
             if Value == "" then
@@ -5595,7 +5840,7 @@
      
   
   --#region old BaseSize
-  Dupetab02:Button('Tutorial', function()
+  Dupetab02:Button('Tutorial coming soon', function()
      TutorialVid = ""
      if not setclipboard(TutorialVid) then
          toclipboard(TutorialVid)
@@ -5604,7 +5849,7 @@
      end
      notifications:message{
          Title = "",
-         Description = "youtube tutorial coming soon.",
+         Description = "copied to clipboard",
          Icon = 6023426926
      }
  end)
@@ -5855,7 +6100,7 @@
   
   Woodtab2:Toggle('Cut Plank to one by one', '', false, function(Value)
   notifications:message{
-  Title = "",
+  Title = "Butter",
   Description = "Click a plank cut one by one",
   Icon = 6023426926
   }
@@ -5882,7 +6127,7 @@
       ModWood()
   end)
   
-  Woodtab4:Button('cut a tree', function()
+  Woodtab4:Button('Cut A Tree', function()
   notifications:message{
   Title = "",
   Description = "Click a Tree to Cut",
@@ -5899,9 +6144,101 @@
   
  
   --#region Settings Tab
+ 
+  Settingtab1:Button('Reset config', function()
+     delfile("Butterv1.lua")
+  end)
+ 
+  Settingtab2:Slider('R', '', TheR, 0, 255, false, function(Value)
+     TheR = Value
+  end)
      
-     local Label = Settingtab1:Label("No Shit In Settings .")
-     local Label = Settingtab1:Label("discord:  https://discord.gg/HW2qc7sJqP.")
+  Settingtab2:Slider('G', '', TheG, 0, 255, false, function(Value)
+     TheG = Value
+  end)
+     
+  Settingtab2:Slider('B', '', TheB, 0, 255, false, function(Value)
+     TheB = Value
+  end)
+     
+  Settingtab2:Button('Set', function()
+     GameMenuTheme(Color3.fromRGB(25, 25, 25), Color3.fromRGB(TheR,TheG,TheB))
+     SaveSettings()
+  end)
+ 
+ 
+  local SlotNamesOld = HttpService:JSONDecode(readfile('ButtersSlotNames.cfg'))
+ 
+  local Player = game:GetService("Players").LocalPlayer
+ 
+  function SaveSlotNames()
+     game:GetService("Players").LocalPlayer.PlayerGui.LoadSaveGUI.SlotList.Visible = false
+     game:GetService("Players").LocalPlayer.PlayerGui.MenuGUI.Open.Visible = true
+     if isfile('ButtersSlotNames.cfg') then
+         
+       local DefaultSlotNames = {}
+       DefaultSlotNames[tostring(Player)] = {
+           Slot1Val = SSlot1,
+           Slot2Val = SSlot2,
+           Slot3Val = SSlot3,
+           Slot4Val = SSlot4,
+           Slot5Val = SSlot5,
+           Slot6Val = SSlot6
+       }
+ 
+     writefile('ButtersSlotNames.cfg', HttpService:JSONEncode(DefaultSlotNames))
+     end
+  end
+ 
+  SSlot1 = SlotNamesOld[tostring(Player)].Slot1Val
+  Settingtab3:Textbox('Slot1', '', SlotNamesOld[tostring(Player)].Slot1Val, function(Value)
+     SSlot1 = Value
+     SaveSlotNames()
+  end)
+ 
+ 
+  SSlot2 = SlotNamesOld[tostring(Player)].Slot2Val
+  Settingtab3:Textbox('Slot2', '', SlotNamesOld[tostring(Player)].Slot2Val, function(Value)
+     SSlot2 = Value
+     SaveSlotNames()
+  end)
+ 
+  SSlot3 = SlotNamesOld[tostring(Player)].Slot3Val
+  Settingtab3:Textbox('Slot3', '', SlotNamesOld[tostring(Player)].Slot3Val, function(Value)
+     SSlot3 = Value
+     SaveSlotNames()
+  end)
+ 
+  SSlot4 = SlotNamesOld[tostring(Player)].Slot4Val
+  Settingtab3:Textbox('Slot4', '', SlotNamesOld[tostring(Player)].Slot4Val, function(Value)
+     SSlot4 = Value
+     SaveSlotNames()
+  end)
+ 
+  SSlot5 = SlotNamesOld[tostring(Player)].Slot5Val
+  Settingtab3:Textbox('Slot5', '', SlotNamesOld[tostring(Player)].Slot5Val, function(Value)
+     SSlot5 = Value
+     SaveSlotNames()
+  end)
+ 
+  SSlot6 = SlotNamesOld[tostring(Player)].Slot6Val
+  Settingtab3:Textbox('Slot6', '', SlotNamesOld[tostring(Player)].Slot6Val, function(Value)
+     SSlot6 = Value
+     SaveSlotNames()
+  end)
+ 
+  task.spawn(function()
+  while task.wait() do
+  for i,v in pairs(Player.PlayerGui.LoadSaveGUI.SlotList.Main:GetDescendants()) do
+  if v.Name == "SlotName" then if v.Text == "Slot 1" then v.Text = SSlot1 elseif v.Text == "Slot 2" then v.Text = SSlot2 elseif v.Text == "Slot 3" then v.Text = SSlot3
+  elseif v.Text == "Slot 4" then v.Text = SSlot4 elseif v.Text == "Slot 5" then v.Text = SSlot5 elseif v.Text == "Slot 6" then v.Text = SSlot6 end end
+  end
+  end
+  end)
+  
+ 
+  --#endregion
+
 
   --#region keybinds
   CAMisEnabled = false
@@ -5945,4 +6282,25 @@
  game.Players.PlayerAdded:Connect(UpdateDropdown)
  --#endregion
 
+ 
+  --#region math.random tips
+ 
+  local tipsTable = {
+     "Messilt2 hub has a Discord server https://discord.gg/HW2qc7sJqP",
+  }
+  
+  task.spawn(
+      function()
+          wait(5)
+          local randomIndex = math.random(1, #tipsTable)
+          local randomTip = tipsTable[randomIndex]
+  
+          notifications:message {
+              Title = "Did you know",
+              Description = randomTip,
+              Icon = 6023426926
+          }
+      end
+  )
+  --#endregion
  
